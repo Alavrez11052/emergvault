@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-const ROLES = ["USER", "CONTRIBUTOR", "SENIOR_STAFF", "ADMIN"];
+const ROLES = ["USER", "STAFF", "SENIOR_STAFF", "ADMIN", "FOUNDER"];
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [meId, setMeId] = useState(null);
+  const [meRole, setMeRole] = useState(null);
 
   async function load() {
     setLoading(true);
@@ -20,7 +21,10 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     load();
-    fetch("/api/auth/me").then((r) => r.json()).then((d) => setMeId(d.user?.id));
+    fetch("/api/auth/me").then((r) => r.json()).then((d) => {
+      setMeId(d.user?.id);
+      setMeRole(d.user?.role);
+    });
   }, []);
 
   async function setRole(id, role) {
@@ -50,6 +54,7 @@ export default function AdminUsersPage() {
   const filtered = users.filter(
     (u) => u.name.toLowerCase().includes(q.toLowerCase()) || u.email.toLowerCase().includes(q.toLowerCase())
   );
+  const assignableRoles = meRole === "FOUNDER" ? ROLES : ROLES.filter((r) => r !== "FOUNDER");
 
   return (
     <div>
@@ -62,11 +67,14 @@ export default function AdminUsersPage() {
         <p className="text-[rgb(var(--text-muted))]">Loading...</p>
       ) : (
         <div className="card divide-y divide-[rgb(var(--border))]">
-          {filtered.map((u) => (
+          {filtered.map((u) => {
+            const locked = u.id === meId || (u.role === "FOUNDER" && meRole !== "FOUNDER");
+            return (
             <div key={u.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
               <div>
                 <p className="font-medium flex items-center gap-2">
                   {u.name}
+                  {u.role === "FOUNDER" && <span className="badge bg-brand-500/10 text-brand-600 dark:text-brand-300">Founder</span>}
                   {u.status === "SUSPENDED" && <span className="badge bg-red-500/10 text-red-500">Suspended</span>}
                 </p>
                 <p className="text-sm text-[rgb(var(--text-muted))]">{u.email}</p>
@@ -75,22 +83,25 @@ export default function AdminUsersPage() {
                 <select
                   className="input !py-1.5 !w-auto"
                   value={u.role}
-                  disabled={u.id === meId}
+                  disabled={locked}
                   onChange={(e) => setRole(u.id, e.target.value)}
                 >
-                  {ROLES.map((r) => <option key={r} value={r}>{r.replace("_", " ")}</option>)}
+                  {(assignableRoles.includes(u.role) ? assignableRoles : [...assignableRoles, u.role]).map((r) => (
+                    <option key={r} value={r}>{r.replace("_", " ")}</option>
+                  ))}
                 </select>
                 <button
                   className="btn btn-ghost !py-1.5 !text-xs"
-                  disabled={u.id === meId}
+                  disabled={locked}
                   onClick={() => setStatus(u.id, u.status === "SUSPENDED" ? "ACTIVE" : "SUSPENDED")}
                 >
                   {u.status === "SUSPENDED" ? "Reinstate" : "Suspend"}
                 </button>
-                <button className="btn btn-danger !py-1.5 !text-xs" disabled={u.id === meId} onClick={() => remove(u.id)}>Delete</button>
+                <button className="btn btn-danger !py-1.5 !text-xs" disabled={locked} onClick={() => remove(u.id)}>Delete</button>
               </div>
             </div>
-          ))}
+            );
+          })}
           {filtered.length === 0 && <p className="p-5 text-sm text-[rgb(var(--text-muted))]">No users found.</p>}
         </div>
       )}

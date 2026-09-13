@@ -58,7 +58,7 @@ export default function CommentSection({ caseId, comments, loggedIn }) {
           <div key={c.id} className="border-b border-[rgb(var(--border))] pb-4 last:border-0">
             <div className="flex items-center gap-2 mb-1">
               <span className="font-semibold text-sm">{c.name}</span>
-              {["CONTRIBUTOR", "SENIOR_STAFF", "ADMIN"].includes(c.role) && (
+              {["STAFF", "SENIOR_STAFF", "ADMIN", "FOUNDER"].includes(c.role) && (
                 <span className="badge bg-brand-500/10 text-brand-600 dark:text-brand-300 !text-[10px] !py-0.5">STAFF</span>
               )}
               <span className="text-xs text-[rgb(var(--text-muted))]">

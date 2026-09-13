@@ -6,8 +6,8 @@ import DarkModeToggle from "./DarkModeToggle";
 
 export default function Navbar({ user }) {
   const [open, setOpen] = useState(false);
-  const isStaff = user && ["CONTRIBUTOR", "SENIOR_STAFF", "ADMIN"].includes(user.role);
-  const isAdmin = user && user.role === "ADMIN";
+  const isStaff = user && ["STAFF", "SENIOR_STAFF", "ADMIN", "FOUNDER"].includes(user.role);
+  const isAdmin = user && ["ADMIN", "FOUNDER"].includes(user.role);
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });

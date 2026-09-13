@@ -16,7 +16,7 @@ export default async function StaffLayout({ children }) {
         <Link href="/staff/comments" className="block px-3 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium">Comments</Link>
         <Link href="/staff/announcements" className="block px-3 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium">Announcements</Link>
         <Link href="/staff/analytics" className="block px-3 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium">Analytics</Link>
-        {user.role === "ADMIN" && (
+        {["ADMIN", "FOUNDER"].includes(user.role) && (
           <>
             <p className="text-xs font-semibold uppercase text-[rgb(var(--text-muted))] mt-4 mb-2 px-2">Admin</p>
             <Link href="/admin" className="block px-3 py-2 rounded-xl hover:bg-black/5 dark:hover:bg-white/5 text-sm font-medium">Admin panel &rarr;</Link>
