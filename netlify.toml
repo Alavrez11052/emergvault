@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Netlify auto-detects Next.js and provisions the correct Functions/Edge
+# Functions setup via its Next.js Runtime (OpenNext-based) — no further
+# routing config is needed here.
