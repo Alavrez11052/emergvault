@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -13,6 +14,25 @@ const pool = new Pool({
 });
 
 async function main() {
+  // ---- Founder account (site owner) ----
+  const founderEmail = "braydenkennedy061@gmail.com";
+  const existingFounder = await pool.query("SELECT id FROM users WHERE email = $1", [founderEmail]);
+  if (existingFounder.rows.length === 0) {
+    const founderPassword = crypto.randomBytes(18).toString("base64").replace(/[/+=]/g, "").slice(0, 20) + "!9";
+    const hash = bcrypt.hashSync(founderPassword, 10);
+    await pool.query(
+      "INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, 'FOUNDER')",
+      ["Brayden Kennedy", founderEmail, hash]
+    );
+    console.log("=".repeat(64));
+    console.log(`Created FOUNDER account -> email: ${founderEmail}`);
+    console.log(`Generated password: ${founderPassword}`);
+    console.log("Log in once with this password and change it immediately.");
+    console.log("=".repeat(64));
+  } else {
+    console.log("Founder account already exists, skipping.");
+  }
+
   // ---- Admin + demo staff accounts ----
   const adminEmail = "admin@emhub.local";
   let adminId;

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import getDb from "@/lib/db";
-import { getSession, canManageUsers, ROLES } from "@/lib/auth";
+import { getSession, canManageUsers, canActOnUser, ROLES } from "@/lib/auth";
 import { logAction } from "@/lib/audit";
 
 export async function PATCH(req, { params }) {
@@ -15,6 +15,13 @@ export async function PATCH(req, { params }) {
   const db = getDb();
   const target = await db.get("SELECT * FROM users WHERE id = ?", [params.id]);
   if (!target) return NextResponse.json({ error: "User not found." }, { status: 404 });
+
+  if (!canActOnUser(user, target)) {
+    return NextResponse.json({ error: "Only a founder can modify another founder's account." }, { status: 403 });
+  }
+  if (role === "FOUNDER" && user.role !== "FOUNDER") {
+    return NextResponse.json({ error: "Only a founder can grant founder access." }, { status: 403 });
+  }
 
   if (role) {
     if (!ROLES.includes(role)) return NextResponse.json({ error: "Invalid role." }, { status: 400 });
@@ -41,6 +48,12 @@ export async function DELETE(req, { params }) {
   }
 
   const db = getDb();
+  const target = await db.get("SELECT * FROM users WHERE id = ?", [params.id]);
+  if (!target) return NextResponse.json({ error: "User not found." }, { status: 404 });
+  if (!canActOnUser(user, target)) {
+    return NextResponse.json({ error: "Only a founder can delete another founder's account." }, { status: 403 });
+  }
+
   await db.run("DELETE FROM users WHERE id = ?", [params.id]);
   await logAction(user.id, "USER_DELETED", "user", params.id);
 

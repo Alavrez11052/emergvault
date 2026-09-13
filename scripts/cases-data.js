@@ -42,6 +42,7 @@ add({
   differential: "SVT due to accessory pathway (WPW), AVNRT, vasovagal syncope, exercise-induced arrhythmia, hypertrophic cardiomyopathy.",
   management: "Continuous cardiac monitoring, cardiology consultation for electrophysiology study and possible catheter ablation. Counsel to avoid AV-nodal blocking agents (like verapamil or digoxin) if he develops atrial fibrillation, since these can precipitate rapid conduction down the accessory pathway leading to ventricular fibrillation.",
   teaching_points: "A delta wave and short PR on a resting ECG in a young patient with palpitations should raise suspicion for WPW. If such a patient presents in atrial fibrillation with a wide, irregular, fast rhythm, avoid AV nodal blockers — use procainamide or synchronized cardioversion instead.",
+  quiz: [{ question: "If this patient later develops atrial fibrillation with a wide, irregular, fast rhythm (known WPW), which drug should be avoided?", options: ["Procainamide", "Verapamil (an AV-nodal blocker)", "Synchronized cardioversion", "Supplemental oxygen"], correct_index: 1, explanation: "AV-nodal blockers can preferentially slow the AV node and promote conduction down the accessory pathway, precipitating ventricular fibrillation; procainamide or cardioversion are preferred." }],
 });
 
 add({
@@ -96,6 +97,7 @@ add({
   differential: "COPD exacerbation, pneumonia, heart failure, pneumothorax, pulmonary embolism.",
   management: "Bronchodilators (nebulized albuterol/ipratropium), systemic corticosteroids, controlled oxygen titration to avoid over-oxygenation (target SpO2 88-92%), trial of non-invasive ventilation (BiPAP) given respiratory acidosis, consider antibiotics if evidence of bacterial exacerbation.",
   teaching_points: "In COPD patients, titrate oxygen carefully — over-oxygenating can worsen hypercapnia via V/Q mismatch and loss of hypoxic respiratory drive. BiPAP is first-line for COPD exacerbations with respiratory acidosis and reduces the need for intubation.",
+  quiz: [{ question: "What is the most appropriate oxygen therapy strategy for this COPD patient in acute exacerbation?", options: ["Titrate to a target SpO2 of 88-92%", "High-flow 100% oxygen to normalize saturation", "Withhold all supplemental oxygen", "Titrate to SpO2 above 98%"], correct_index: 0, explanation: "Over-oxygenating COPD patients can worsen hypercapnia via V/Q mismatch and blunted hypoxic drive, so oxygen should be titrated to 88-92%." }],
 });
 
 add({
@@ -109,6 +111,7 @@ add({
   differential: "Primary spontaneous pneumothorax, pulmonary embolism, musculoskeletal chest pain, pericarditis.",
   management: "For a moderate primary spontaneous pneumothorax in a stable patient, options include observation with supplemental oxygen for smaller pneumothoraces or needle aspiration/chest tube placement for larger ones per size criteria and symptoms. Serial CXRs to confirm resolution, smoking cessation counseling, and follow-up with pulmonology given recurrence risk.",
   teaching_points: "Tall, thin young males are the classic demographic for primary spontaneous pneumothorax due to rupture of subpleural blebs. Tension pneumothorax (tracheal deviation, hypotension, distended neck veins) is a clinical diagnosis requiring immediate needle decompression — don't wait for imaging.",
+  quiz: [{ question: "Which finding, if it developed, would indicate this has progressed to a tension pneumothorax requiring immediate needle decompression?", options: ["Hyperresonance to percussion", "Tracheal deviation and hypotension", "Pleuritic chest pain", "Decreased breath sounds on the right"], correct_index: 1, explanation: "Tension pneumothorax is a clinical diagnosis marked by tracheal deviation, hypotension, and distended neck veins — treat immediately, don't wait for imaging." }],
 });
 
 // ================= TRAUMA =================
